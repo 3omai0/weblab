@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Manage Items - Mobile Store</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #f8f9fa; }
+    .page-header { background: linear-gradient(135deg, #6f42c1, #4b0082); color: #fff; padding: 40px 0; text-align: center; margin-bottom: 30px; }
+    .manage-card { background: #fff; border-radius: 14px; padding: 30px; box-shadow: 0 4px 24px rgba(0,0,0,0.09); }
+    .table img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; }
+    .table th { background: #343a40; color: #fff; }
+  </style>
+</head>
+<body>
+
+<div id="navbar-placeholder"></div>
+
+<div class="page-header">
+  <h2><i class="fa fa-sliders me-2"></i>Manage Items</h2>
+  <p class="mb-0">Admin Panel — Add, Edit, View, Delete products</p>
+</div>
+
+<div class="container">
+  <div class="manage-card">
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#insertModal">
+      <i class="fa fa-plus me-1"></i>Insert New Product
+    </button>
+
+    <div id="loadingMsg" class="text-center py-3"><div class="spinner-border text-primary"></div></div>
+
+    <table class="table table-hover table-bordered" id="manageTable" style="display:none;">
+      <thead>
+        <tr><th>#</th><th>Title</th><th>Price</th><th>Image</th><th>Actions</th></tr>
+      </thead>
+      <tbody id="manageTbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- INSERT MODAL -->
+<div class="modal fade" id="insertModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title"><i class="fa fa-plus me-2"></i>Insert New Product</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-2"><label class="form-label">Title</label><input type="text" id="ins_title" class="form-control" /></div>
+        <div class="mb-2"><label class="form-label">Description</label><textarea id="ins_desc" class="form-control" rows="3"></textarea></div>
+        <div class="mb-2"><label class="form-label">Price (SAR)</label><input type="number" id="ins_price" class="form-control" /></div>
+        <div class="mb-2"><label class="form-label">Image URL</label><input type="text" id="ins_image" class="form-control" placeholder="https://..." /></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-primary" onclick="insertItem()">Insert</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="modal fade" id="detailModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-info text-white">
+        <h5 class="modal-title"><i class="fa fa-circle-info me-2"></i>Product Detail</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="detailBody"></div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- UPDATE MODAL -->
+<div class="modal fade" id="updateModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-warning">
+        <h5 class="modal-title"><i class="fa fa-edit me-2"></i>Update Product</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="upd_id" />
+        <div class="mb-2"><label class="form-label">Title</label><input type="text" id="upd_title" class="form-control" /></div>
+        <div class="mb-2"><label class="form-label">Description</label><textarea id="upd_desc" class="form-control" rows="3"></textarea></div>
+        <div class="mb-2"><label class="form-label">Price (SAR)</label><input type="number" id="upd_price" class="form-control" /></div>
+        <div class="mb-2"><label class="form-label">Image URL</label><input type="text" id="upd_image" class="form-control" /></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-warning" onclick="updateItem()">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="navbar.js"></script>
+<script>
+  const SUPABASE_URL = "https://mlrrzqetrhtcjyhowuyy.supabase.co";
+  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1scnJ6cWV0cmh0Y2p5aG93dXl5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2OTM3NDYsImV4cCI6MjA5NDI2OTc0Nn0.XXZbyYLJbn9g2ibZilbOdA084MHjiM1R-DsK5RsU7Qc";
+
+  renderNavbar('manage');
+
+  if (sessionStorage.getItem('role') !== 'admin') {
+    window.location.href = 'home.html';
+  }
+
+  let allItems = [];
+
+  async function loadItems() {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/items?select=*`, {
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+    });
+    allItems = await res.json();
+    renderTable();
+  }
+
+  function renderTable() {
+    document.getElementById('loadingMsg').style.display = 'none';
+    const table = document.getElementById('manageTable');
+    table.style.display = 'table';
+    const tbody = document.getElementById('manageTbody');
+    tbody.innerHTML = allItems.map((item, i) => `
+      <tr>
+        <td>${item.id}</td>
+        <td>${item.title}</td>
+        <td>${item.price} SAR</td>
+        <td><img src="${item.image || 'https://via.placeholder.com/60'}" alt="${item.title}" /></td>
+        <td>
+          <button class="btn btn-sm btn-info me-1 text-white" onclick="showDetail(${i})"><i class="fa fa-eye"></i> Detail</button>
+          <button class="btn btn-sm btn-warning me-1" onclick="showUpdate(${i})"><i class="fa fa-edit"></i> Update</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteItem(${item.id})"><i class="fa fa-trash"></i> Delete</button>
+        </td>
+      </tr>`).join('');
+  }
+
+  async function insertItem() {
+    const title = document.getElementById('ins_title').value.trim();
+    const description = document.getElementById('ins_desc').value.trim();
+    const price = parseInt(document.getElementById('ins_price').value);
+    const image = document.getElementById('ins_image').value.trim();
+
+    if (!title || !price) { alert('Title and Price are required.'); return; }
+
+    await fetch(`${SUPABASE_URL}/rest/v1/items`, {
+      method: 'POST',
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify({ title, description, price, image })
+    });
+
+    bootstrap.Modal.getInstance(document.getElementById('insertModal')).hide();
+    loadItems();
+    Swal.fire({ icon: 'success', title: 'Product inserted!', timer: 1500, showConfirmButton: false });
+  }
+
+  function showDetail(index) {
+    const item = allItems[index];
+    document.getElementById('detailBody').innerHTML = `
+      <div class="text-center mb-3"><img src="${item.image || 'https://via.placeholder.com/200'}" style="width:200px;border-radius:10px;" /></div>
+      <table class="table table-bordered">
+        <tr><th>ID</th><td>${item.id}</td></tr>
+        <tr><th>Title</th><td>${item.title}</td></tr>
+        <tr><th>Description</th><td>${item.description || '-'}</td></tr>
+        <tr><th>Price</th><td>${item.price} SAR</td></tr>
+      </table>`;
+    new bootstrap.Modal(document.getElementById('detailModal')).show();
+  }
+
+  function showUpdate(index) {
+    const item = allItems[index];
+    document.getElementById('upd_id').value = item.id;
+    document.getElementById('upd_title').value = item.title;
+    document.getElementById('upd_desc').value = item.description || '';
+    document.getElementById('upd_price').value = item.price;
+    document.getElementById('upd_image').value = item.image || '';
+    new bootstrap.Modal(document.getElementById('updateModal')).show();
+  }
+
+  async function updateItem() {
+    const id = document.getElementById('upd_id').value;
+    const title = document.getElementById('upd_title').value.trim();
+    const description = document.getElementById('upd_desc').value.trim();
+    const price = parseInt(document.getElementById('upd_price').value);
+    const image = document.getElementById('upd_image').value.trim();
+
+    await fetch(`${SUPABASE_URL}/rest/v1/items?id=eq.${id}`, {
+      method: 'PATCH',
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify({ title, description, price, image })
+    });
+
+    bootstrap.Modal.getInstance(document.getElementById('updateModal')).hide();
+    loadItems();
+    Swal.fire({ icon: 'success', title: 'Product updated!', timer: 1500, showConfirmButton: false });
+  }
+
+  async function deleteItem(id) {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'This product will be permanently deleted.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#dc3545',
+      confirmButtonText: 'Yes, delete it!'
+    });
+
+    if (result.isConfirmed) {
+      await fetch(`${SUPABASE_URL}/rest/v1/items?id=eq.${id}`, {
+        method: 'DELETE',
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+      });
+      loadItems();
+      Swal.fire({ icon: 'success', title: 'Deleted!', timer: 1200, showConfirmButton: false });
+    }
+  }
+
+  loadItems();
+</script>
+</body>
+</html>

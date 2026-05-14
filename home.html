@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Home - Mobile Store</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; }
+    .carousel-item img { height: 480px; object-fit: cover; width: 100%; filter: brightness(0.75); }
+    .jumbotron-section { background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%); color: #fff; padding: 60px 0; text-align: center; }
+    .product-img { width: 100%; height: 180px; object-fit: cover; border-radius: 10px; transition: transform .3s, box-shadow .3s; }
+    .product-img:hover { transform: scale(1.07); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+    .team-img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #0d6efd; }
+    .section-title { font-size: 1.8rem; font-weight: 700; margin-bottom: 30px; position: relative; }
+    .section-title::after { content:''; display:block; width:50px; height:4px; background:#0d6efd; border-radius:2px; margin: 8px auto 0; }
+    footer { background: #1a1a2e; color: #ccc; padding: 40px 0; }
+    footer a { color: #6ea8fe; text-decoration: none; }
+    .welcome-heading { text-align: center; padding: 30px 0 0; font-weight: 700; color: #0a58ca; }
+  </style>
+</head>
+<body>
+
+<div id="navbar-placeholder"></div>
+
+<h1 class="welcome-heading" id="welcomeMsg"></h1>
+
+<!-- CAROUSEL -->
+<div id="mainCarousel" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="0" class="active"></button>
+    <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="1"></button>
+    <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="2"></button>
+    <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="3"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="slide1" />
+      <div class="carousel-caption"><h3>Latest Smartphones</h3><p>Discover the newest models</p></div>
+    </div>
+    <div class="carousel-item">
+      <img src="https://images.pexels.com/photos/607812/pexels-photo-607812.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="slide2" />
+      <div class="carousel-caption"><h3>Best Deals</h3><p>Unbeatable prices every day</p></div>
+    </div>
+    <div class="carousel-item">
+      <img src="https://images.pexels.com/photos/788946/pexels-photo-788946.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="slide3" />
+      <div class="carousel-caption"><h3>Top Brands</h3><p>Samsung, Apple, Xiaomi & more</p></div>
+    </div>
+    <div class="carousel-item">
+      <img src="https://images.pexels.com/photos/47261/pexels-photo-47261.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="slide4" />
+      <div class="carousel-caption"><h3>Fast Delivery</h3><p>Get your phone at your door</p></div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </button>
+</div>
+
+<!-- JUMBOTRON -->
+<div class="jumbotron-section">
+  <div class="container">
+    <h1 class="display-4 fw-bold"><i class="fa-solid fa-mobile-screen-button me-2"></i>Mobile Store</h1>
+    <p class="lead">Your #1 destination for the latest smartphones. We carry all top brands at the best prices with fast, reliable delivery across the Kingdom.</p>
+    <a href="products.html" class="btn btn-light btn-lg mt-2 px-4">Browse Products</a>
+  </div>
+</div>
+
+<!-- OUR PRODUCTS -->
+<div class="container my-5 text-center">
+  <div class="section-title">Our Products</div>
+  <div class="row g-3" id="homeProducts">
+    <!-- filled by JS -->
+  </div>
+</div>
+
+<!-- OUR TEAM -->
+<div class="bg-light py-5">
+  <div class="container text-center">
+    <div class="section-title">Our Team</div>
+    <div class="row justify-content-center g-4">
+      <div class="col-md-4 col-sm-6">
+        <img src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=300" class="team-img mb-3" alt="team1" />
+        <h5 class="fw-bold">Ahmed Al-Rashid</h5>
+        <p class="text-muted small">CEO & Founder — Leading the vision of mobile excellence.</p>
+      </div>
+      <div class="col-md-4 col-sm-6">
+        <img src="https://images.pexels.com/photos/1181391/pexels-photo-1181391.jpeg?auto=compress&cs=tinysrgb&w=300" class="team-img mb-3" alt="team2" />
+        <h5 class="fw-bold">Sara Mohammed</h5>
+        <p class="text-muted small">Head of Sales — Ensuring every customer finds the perfect phone.</p>
+      </div>
+      <div class="col-md-4 col-sm-6">
+        <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=300" class="team-img mb-3" alt="team3" />
+        <h5 class="fw-bold">Khalid Hassan</h5>
+        <p class="text-muted small">Tech Support — Keeping your devices running smoothly.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OUR SERVICES -->
+<div class="container my-5 text-center">
+  <div class="section-title">Our Services</div>
+  <div class="row g-4 justify-content-center">
+    <div class="col-md-4">
+      <div class="card h-100 border-0 shadow-sm p-3">
+        <div class="card-body">
+          <i class="fa-solid fa-truck-fast fa-2x text-primary mb-3"></i>
+          <h5 class="card-title fw-bold">Fast Delivery</h5>
+          <p class="card-text text-muted">Same-day delivery available in major cities. Your phone arrives fresh and ready.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100 border-0 shadow-sm p-3">
+        <div class="card-body">
+          <i class="fa-solid fa-shield-halved fa-2x text-success mb-3"></i>
+          <h5 class="card-title fw-bold">1-Year Warranty</h5>
+          <p class="card-text text-muted">Every phone comes with a full 1-year warranty and hassle-free returns.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100 border-0 shadow-sm p-3">
+        <div class="card-body">
+          <i class="fa-solid fa-headset fa-2x text-warning mb-3"></i>
+          <h5 class="card-title fw-bold">24/7 Support</h5>
+          <p class="card-text text-muted">Our expert team is available around the clock to help you with any issue.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 mb-4 mb-md-0">
+        <h5 class="text-white fw-bold mb-3"><i class="fa-solid fa-mobile-screen-button me-2 text-primary"></i>Mobile Store</h5>
+        <p class="small">Contact Us</p>
+        <p class="small"><i class="fa fa-map-marker-alt me-2 text-primary"></i>Jeddah, Mecca Region, Saudi Arabia</p>
+        <p class="small"><i class="fa fa-phone me-2 text-primary"></i>+966 50 000 0000</p>
+        <p class="small"><i class="fa fa-envelope me-2 text-primary"></i><a href="mailto:support@mobilestore.sa">support@mobilestore.sa</a></p>
+        <div class="d-flex gap-3 mt-3">
+          <a href="#"><i class="fab fa-facebook fa-lg"></i></a>
+          <a href="#"><i class="fab fa-instagram fa-lg"></i></a>
+          <a href="#"><i class="fab fa-twitter fa-lg"></i></a>
+          <a href="#"><i class="fab fa-whatsapp fa-lg"></i></a>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <h5 class="text-white fw-bold mb-3"><i class="fa fa-map-location-dot me-2 text-primary"></i>Our Location</h5>
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3713.3!2d39.192!3d21.485!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjHCsDI5JzA2LjAiTiAzOcKwMTEnMzIuMCJF!5e0!3m2!1sen!2ssa!4v1620000000000"
+          width="100%" height="200" style="border:0; border-radius:10px;" allowfullscreen loading="lazy">
+        </iframe>
+      </div>
+    </div>
+    <hr class="border-secondary mt-4" />
+    <p class="text-center small mb-0">&copy; 2025 Mobile Store. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="navbar.js"></script>
+<script>
+  const SUPABASE_URL = "https://mlrrzqetrhtcjyhowuyy.supabase.co";
+  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1scnJ6cWV0cmh0Y2p5aG93dXl5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2OTM3NDYsImV4cCI6MjA5NDI2OTc0Nn0.XXZbyYLJbn9g2ibZilbOdA084MHjiM1R-DsK5RsU7Qc";
+
+  renderNavbar('home');
+
+  const username = sessionStorage.getItem('username') || 'Guest';
+  document.getElementById('welcomeMsg').textContent = `Welcome ${username}`;
+
+  async function loadHomeProducts() {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/items?select=*&limit=8`, {
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+    });
+    const items = await res.json();
+    const container = document.getElementById('homeProducts');
+    if (!items || items.length === 0) {
+      container.innerHTML = '<p class="text-muted">No products yet.</p>';
+      return;
+    }
+    container.innerHTML = items.map(item => `
+      <div class="col-6 col-md-3">
+        <img src="${item.image || 'https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?w=400'}"
+             class="product-img" alt="${item.title}" title="${item.title}" />
+        <p class="mt-2 fw-semibold small">${item.title}</p>
+        <p class="text-primary small">${item.price} SAR</p>
+      </div>`).join('');
+  }
+
+  loadHomeProducts();
+</script>
+</body>
+</html>
